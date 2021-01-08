@@ -6,9 +6,15 @@ let blob = null;
 let blobUrl = null;
 let blobAnchor = null;
 
+function updateFlip() {
+  let transform = flip ? "scaleX(-1)" : "";
+  video.style.transform = transform;
+  if (canvas) canvas.style.transform = transform;
+}
+
 function setFlip(val) {
   flip = val;
-  video.style.transform = flip ? "scaleX(-1)" : "";
+  updateFlip();
 }
 
 setFlip(true);
@@ -48,6 +54,7 @@ video.addEventListener("click", function() {
 //  setFlip(!flip);
   if (canvas) canvas.remove();
   canvas = document.createElement("canvas");
+  updateFlip();
   blob = null;
   if (blobUrl) {
     URL.revokeObjectURL(blobUrl);
