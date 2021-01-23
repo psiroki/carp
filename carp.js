@@ -122,7 +122,7 @@ video.addEventListener("click", function() {
     }
     const timeDelta = t - lastTime;
     let start = pos|0;
-    pos += timeDelta * 5e-3;
+    pos += timeDelta * 3e-3;
     let end = pos|0;
     let rect = Array(4).fill(0);
     rect[otherDim] = 0;
