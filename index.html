@@ -17,7 +17,10 @@
 		background-color: #888;
 		object-fit: cover;
 	}
-	canvas {
+	body.flipped #videoElement, body.flipped button {
+		transform: scaleX(-1);
+	}
+	.canvas, .canvas > canvas {
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -40,12 +43,36 @@
 		top: 8px;
 		left: 8px;
 	}
+	.down {
+		display: block;
+		font-style: normal;
+		transition: transform 0.3s ease-in-out;
+	}
+	.horizontal .down {
+		transform: rotate(-90deg);
+	}
+	button {
+		position: fixed;
+		left: 8px;
+		bottom: 8px;
+		color: white;
+		text-shadow: 1px 1px 1px black, 0px 1px 1px black, -1px 1px 1px black;
+		white-space: pre;
+		font-size: 10vmin;
+		background: transparent;
+		border: none;
+	}
+	button:focus {
+		outline: none;
+		text-shadow: 1px 1px 1px black, 0px 1px 1px black, -1px 1px 1px black, 0 1px 3px black;
+	}
 </style>
 </head>
  
 <body>
 <video autoplay="true" id="videoElement"></video>
 <span id="info"></span>
+<button type="button"><i class="down">&#x25bc;</i></button>
 <script defer="defer" src="carp.js"></script>
 </body>
 </html>
