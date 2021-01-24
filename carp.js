@@ -1,3 +1,5 @@
+"use strict";
+
 let video = document.querySelector("#videoElement");
 let info = document.getElementById("info");
 let flip = false;
@@ -6,10 +8,12 @@ let blob = null;
 let blobUrl = null;
 let blobAnchor = null;
 let horizontal = false;
+let environment = false;
 
 function updateFlip() {
   let transform = flip ? "scaleX(-1)" : "";
   document.body.classList.toggle("flipped", flip);
+  document.body.classList.toggle("environment", !flip);
   if (canvasDiv) canvasDiv.style.transform = transform;
   if (blobAnchor) blobAnchor.style.transform = transform;
 }
@@ -34,12 +38,16 @@ if (navigator.mediaDevices.getUserMedia) {
     "#hd": 720,
     "#fullhd": 1080
   };
+  initializeMedia(wm[location.hash], hm[location.hash], fm[location.hash]);
+}
+
+function initializeMedia(minWidth, minHeight, facingMode) {
   let constraints = {
     video: {
-      width: { min: wm[location.hash] || 320, ideal: 1920 },
-      height: { min: hm[location.hash] || 180, ideal: 1080 },
+      width: { min: minWidth || 320, ideal: 1920 },
+      height: { min: minHeight || 180, ideal: 1080 },
       frameRate: { min: 30, ideal: 60 },
-      facingMode: fm[location.hash] || "user"
+      facingMode: facingMode || "user"
     }
   };
   if (!constraints.facingMode) delete constraints.facingMode;
@@ -47,9 +55,11 @@ if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia(constraints)
     .then(function (stream) {
       video.srcObject = stream;
-      const vtracks = stream.getVideoTrakcs();
-      let facingMode = vtracks[0].getCapabilities().facingMode;
-      setFlip(!!facingMode.find("user"));
+      const vtracks = stream.getVideoTracks();
+      let facingMode = vtracks[0].getConstraints().facingMode;
+      environment = facingMode === "environment";
+      console.log(facingMode);
+      setFlip(!environment);
     })
     .catch(function (error) {
       console.log("Something went wrong!", error);
@@ -165,9 +175,13 @@ video.addEventListener("click", function() {
   });
 });
 
-document.querySelector("button").addEventListener("click", _ => {
+document.querySelector("button.direction").addEventListener("click", _ => {
   horizontal = !horizontal;
   document.body.classList.toggle("horizontal", horizontal);
+});
+
+document.querySelector("button.facingMode").addEventListener("click", _ => {
+  initializeMedia(null, null, environment ? "user" : "environment");
 });
 
 video.addEventListener("loadeddata", function (e) {

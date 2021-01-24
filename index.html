@@ -43,7 +43,7 @@
 		top: 8px;
 		left: 8px;
 	}
-	.down {
+	.down, .user {
 		display: block;
 		font-style: normal;
 		transition: transform 0.3s ease-in-out;
@@ -51,10 +51,29 @@
 	.horizontal .down {
 		transform: rotate(-90deg);
 	}
-	button {
+	.facingMode {
+		perspective: 48px;
+	}
+	.user {
+		transform: rotateX(75deg);
+	}
+	.environment .user {
+		transform: rotateX(240deg);
+	}
+	.user i {
+		display: block;
+		animation: 1s ease-in-out infinite alternate moveBack;
+	}
+	@keyframes moveBack {
+		from { transform: translateY(-10px); }
+		to { transform: translateY(10px); }
+	}
+	div.buttonPanel {
 		position: fixed;
 		left: 8px;
 		bottom: 8px;
+	}
+	button {
 		color: white;
 		text-shadow: 1px 1px 1px black, 0px 1px 1px black, -1px 1px 1px black;
 		white-space: pre;
@@ -72,7 +91,10 @@
 <body>
 <video autoplay="true" id="videoElement"></video>
 <span id="info"></span>
-<button type="button"><i class="down">&#x25bc;</i></button>
+<div class="buttonPanel">
+<button type="button" class="direction"><i class="down">&#x25bc;</i></button>
+<button type="button" class="facingMode"><i class="user"><i>&#x25bc;</i></i></button>
+</div>
 <script defer="defer" src="carp.js"></script>
 </body>
 </html>
