@@ -47,9 +47,12 @@ if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia(constraints)
     .then(function (stream) {
       video.srcObject = stream;
+      const vtracks = stream.getVideoTrakcs();
+      let facingMode = vtracks[0].getCapabilities().facingMode;
+      setFlip(!!facingMode.find("user"));
     })
-    .catch(function (err0r) {
-      console.log("Something went wrong!", err0r);
+    .catch(function (error) {
+      console.log("Something went wrong!", error);
     });
 }
 
