@@ -39,7 +39,7 @@ if (navigator.mediaDevices.getUserMedia) {
       width: { min: wm[location.hash] || 320, ideal: 1920 },
       height: { min: hm[location.hash] || 180, ideal: 1080 },
       frameRate: { min: 30, ideal: 60 },
-      facingMode: fm[location.hash]
+      facingMode: fm[location.hash] || "user"
     }
   };
   if (!constraints.facingMode) delete constraints.facingMode;
